@@ -71,6 +71,7 @@ export default function LeaderboardsPage() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
+                    
                     {data[category].map((player: any, i: number) => (
                       <TableRow key={player.id}>
                         <TableCell className="text-center">{i + 1}</TableCell>
