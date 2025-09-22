@@ -14,7 +14,7 @@ export default function Home() {
         <div className="flex flex-col gap-4 w-full">
           <Link href="/profile" className="bg-blue-600 text-white py-3 rounded text-lg font-medium text-center hover:bg-blue-700 transition">Profile</Link>
           <Link href="/leaderboards" className="bg-green-600 text-white py-3 rounded text-lg font-medium text-center hover:bg-green-700 transition">Leaderboards</Link>
-          <Link href="/tounaments" className="bg-purple-600 text-white py-3 rounded text-lg font-medium text-center hover:bg-purple-700 transition">Tournaments</Link>
+          <Link href="/tournaments" className="bg-purple-600 text-white py-3 rounded text-lg font-medium text-center hover:bg-purple-700 transition">Tournaments</Link>
         </div>
       </div>
     </div>

@@ -6,7 +6,29 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Loader2 } from "lucide-react";
 
-const fetchLichessUser = async (username: string) => {
+// Types based on Lichess API response
+interface LichessUser {
+  id: string;
+  username: string;
+  url: string;
+  perfs: {
+    blitz?: { rating: number };
+    rapid?: { rating: number };
+    classical?: { rating: number };
+    [key: string]: { rating: number } | undefined;
+  };
+  count?: {
+    all: number;
+    [key: string]: number;
+  };
+  profile?: {
+    bio?: string;
+    [key: string]: unknown;
+  };
+}
+
+// API call function
+const fetchLichessUser = async (username: string): Promise<LichessUser> => {
   const res = await fetch(`https://lichess.org/api/user/${username}`, {
     cache: "no-store",
   });
@@ -16,7 +38,7 @@ const fetchLichessUser = async (username: string) => {
 
 export default function ProfilePage() {
   const [username, setUsername] = useState("");
-  const [profile, setProfile] = useState<any>(null);
+  const [profile, setProfile] = useState<LichessUser | null>(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -28,8 +50,12 @@ export default function ProfilePage() {
     try {
       const data = await fetchLichessUser(username);
       setProfile(data);
-    } catch (err: any) {
-      setError(err.message || "Error fetching profile");
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message || "Error fetching profile");
+      } else {
+        setError("Unknown error");
+      }
     } finally {
       setLoading(false);
     }
@@ -84,7 +110,7 @@ export default function ProfilePage() {
             <div className="space-y-3">
               <div>
                 <span className="font-medium">Games Played:</span>{" "}
-                {profile.count?.all}
+                {profile.count?.all ?? 0}
               </div>
 
               <div>

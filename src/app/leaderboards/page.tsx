@@ -18,14 +18,31 @@ import {
 } from "@/components/ui/table";
 import { Loader2 } from "lucide-react";
 
+// Define types for Player performance
+interface Perf {
+  rating: number;
+  progress: number;
+}
+
+// Player type
+interface Player {
+  id: string;
+  username: string;
+  title?: string;
+  perfs: Record<string, Perf>;
+}
+
+// API response type
+type LeaderboardResponse = Record<string, Player[]>;
+
 export default function LeaderboardsPage() {
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<LeaderboardResponse | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetch("https://lichess.org/api/player")
       .then((res) => res.json())
-      .then((d) => {
+      .then((d: LeaderboardResponse) => {
         setData(d);
         setLoading(false);
       })
@@ -71,8 +88,7 @@ export default function LeaderboardsPage() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    
-                    {data[category].map((player: any, i: number) => (
+                    {data[category].map((player, i) => (
                       <TableRow key={player.id}>
                         <TableCell className="text-center">{i + 1}</TableCell>
                         <TableCell>
